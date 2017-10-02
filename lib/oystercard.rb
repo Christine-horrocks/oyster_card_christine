@@ -5,7 +5,8 @@ attr_reader :balance
     @balance = balance
   end
 
-  def top_up
+  def top_up(amount)
+    @balance += amount
   end
-  
+
 end
