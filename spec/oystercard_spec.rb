@@ -23,18 +23,24 @@ describe Oystercard do
     expect{ subject.deduct 10 }.to change{ subject.balance }.by -10
   end
 
-  it 'when initialized in_use is false' do
-    expect(subject.in_use).to eq(false)
-  end
+  describe 'in_use' do
+    it 'when initialized in_use is false' do
+      expect(subject.in_use).to eq(false)
+    end
 
-  it 'in_use is true when touch_in' do
-    subject.touch_in
-    expect(subject.in_use).to eq(true)
-  end
+    it 'in_use is true when touch_in' do
+      subject.top_up(2)
+      subject.touch_in
+      expect(subject.in_use).to eq(true)
+    end
 
-  it 'in_use is false when touch_out' do
-    subject.touch_out
-    expect(subject.in_use).to eq(false)
-  end
+    it 'in_use is false when touch_out' do
+      subject.touch_out
+      expect(subject.in_use).to eq(false)
+    end
 
+    it 'raises an error if balance is less than 1 when touch_in' do
+      expect{ subject.touch_in}.to raise_error 'You need to top up!'
+    end
+  end
 end
