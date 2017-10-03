@@ -1,6 +1,8 @@
 require 'oystercard'
 
 describe Oystercard do
+  let (:entry_station) {double :entry_station}
+
   it 'every new card has a balance of 0' do
     expect(subject.balance).to eq(0)
   end
@@ -19,19 +21,21 @@ describe Oystercard do
     expect { subject.top_up(4) }.to raise_error "You cannot exceed max balance of #{max_balance}"
   end
 
-  it 'reduces balance when deduct' do
-    expect { subject.deduct 10 }.to change { subject.balance }.by(-10)
-  end
-
   describe 'in_use' do
     it 'when initialized in_use is false' do
       expect(subject.in_use).to eq(false)
     end
 
     it 'in_use is true when touch_in' do
-      subject.top_up(2)
-      subject.touch_in
+      subject.top_up(1)
+      subject.touch_in(1)
       expect(subject.in_use).to eq(true)
+    end
+
+    it 'registers which station you have touch_in at' do
+      subject.top_up(2)
+      subject.touch_in(entry_station)
+      expect(subject.entry_station).to eq(entry_station)
     end
 
     it 'in_use is false when touch_out' do
@@ -46,7 +50,7 @@ describe Oystercard do
     end
 
     it 'raises an error if balance is less than 1 when touch_in' do
-      expect { subject.touch_in }.to raise_error 'You need to top up!'
+      expect { subject.touch_in(1) }.to raise_error 'You need to top up!'
     end
   end
 end
