@@ -23,8 +23,8 @@ describe Oystercard do
     expect{ subject.deduct 10 }.to change{ subject.balance }.by -10
   end
 
-  it 'when initialized in_journey is false' do
-    expect(subject.in_journey).to eq(false)
+  it 'when initialized in_use is false' do
+    expect(subject.in_use).to eq(false)
   end
 
 end
