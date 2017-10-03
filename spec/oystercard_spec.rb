@@ -27,4 +27,14 @@ describe Oystercard do
     expect(subject.in_use).to eq(false)
   end
 
+  it 'in_use is true when touch_in' do
+    subject.touch_in
+    expect(subject.in_use).to eq(true)
+  end
+
+  it 'in_use is false when touch_out' do
+    subject.touch_out
+    expect(subject.in_use).to eq(false)
+  end
+
 end
