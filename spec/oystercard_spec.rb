@@ -18,4 +18,13 @@ describe Oystercard do
     subject.top_up(max_balance)
     expect { subject.top_up(4) }.to raise_error "You cannot exceed max balance of #{:max_balance}"
   end
+
+  it 'reduces balance when deduct' do
+    expect{ subject.deduct 10 }.to change{ subject.balance }.by -10
+  end
+
+  it 'when initialized in_journey is false' do
+    expect(subject.in_journey).to eq(false)
+  end
+
 end
