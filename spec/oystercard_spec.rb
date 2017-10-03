@@ -10,17 +10,17 @@ describe Oystercard do
   end
 
   it 'changes balance when top_up' do
-    expect{ subject.top_up 2 }.to change{ subject.balance }.by 2
+    expect { subject.top_up 2 }.to change { subject.balance }.by 2
   end
 
   it 'prevents balance exceeding 90' do
     max_balance = Oystercard::MAX_BALANCE
     subject.top_up(max_balance)
-    expect { subject.top_up(4) }.to raise_error "You cannot exceed max balance of #{:max_balance}"
+    expect { subject.top_up(4) }.to raise_error "You cannot exceed max balance of #{max_balance}"
   end
 
   it 'reduces balance when deduct' do
-    expect{ subject.deduct 10 }.to change{ subject.balance }.by -10
+    expect { subject.deduct 10 }.to change { subject.balance }.by(-10)
   end
 
   describe 'in_use' do
@@ -39,8 +39,14 @@ describe Oystercard do
       expect(subject.in_use).to eq(false)
     end
 
+    it 'deducts min_fare when touch_out' do
+      min_fare = Oystercard::MIN_FARE
+      subject.top_up(2)
+      expect { subject.touch_out }.to change { subject.balance}.by(-min_fare)
+    end
+
     it 'raises an error if balance is less than 1 when touch_in' do
-      expect{ subject.touch_in}.to raise_error 'You need to top up!'
+      expect { subject.touch_in }.to raise_error 'You need to top up!'
     end
   end
 end
