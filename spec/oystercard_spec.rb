@@ -7,10 +7,6 @@ describe Oystercard do
     expect(subject.balance).to eq(0)
   end
 
-  it 'oystercard can be top_up' do
-    expect(subject).to respond_to(:top_up).with(1).argument
-  end
-
   it 'changes balance when top_up' do
     expect { subject.top_up 2 }.to change { subject.balance }.by 2
   end
@@ -22,25 +18,23 @@ describe Oystercard do
   end
 
   describe 'in_use' do
-    it 'when initialized in_use is false' do
-      expect(subject.in_use).to eq(false)
-    end
 
     it 'in_use is true when touch_in' do
       subject.top_up(1)
       subject.touch_in(1)
-      expect(subject.in_use).to eq(true)
+      expect(subject.in_use?).to eq(true)
     end
+
+    it 'in_use is false when touch_out' do
+      subject.touch_out
+      expect(subject.in_use?).to eq(false)
+    end
+  end
 
     it 'registers which station you have touch_in at' do
       subject.top_up(2)
       subject.touch_in(entry_station)
       expect(subject.entry_station).to eq(entry_station)
-    end
-
-    it 'in_use is false when touch_out' do
-      subject.touch_out
-      expect(subject.in_use).to eq(false)
     end
 
     it 'deducts min_fare when touch_out' do
@@ -59,5 +53,4 @@ describe Oystercard do
     it 'raises an error if balance is less than 1 when touch_in' do
       expect { subject.touch_in(1) }.to raise_error 'You need to top up!'
     end
-  end
 end
