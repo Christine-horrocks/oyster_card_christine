@@ -26,7 +26,7 @@ class Oystercard
   end
 
   def in_use?
-    @entry_station == nil ? false : true
+    !!entry_station
   end
 
   private
