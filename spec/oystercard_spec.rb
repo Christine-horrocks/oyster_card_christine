@@ -49,6 +49,13 @@ describe Oystercard do
       expect { subject.touch_out }.to change { subject.balance}.by(-min_fare)
     end
 
+    it 'sets entry_station to nil on touch_out' do
+      subject.top_up(2)
+      subject.touch_in(1)
+      subject.touch_out
+      expect(subject.entry_station).to eq(nil)
+    end
+
     it 'raises an error if balance is less than 1 when touch_in' do
       expect { subject.touch_in(1) }.to raise_error 'You need to top up!'
     end
